@@ -1,0 +1,30 @@
+# IntelliJ & Java
+.idea/
+*.iml
+*.class
+*.log
+*.jar
+*.war
+*.ear
+target/
+out/
+*.db
+*.sqlite
+*.sql
+*.lock
+*.gz
+
+# Maven
+.mvn/
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+dependency-reduced-pom.xml
+release.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Sensitive files
+database.properties
