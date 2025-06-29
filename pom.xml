@@ -1,75 +1,97 @@
+<!--
+  Maven Project Object Model (POM) file for the Student Management System project.
+  This file defines the project metadata, dependencies, and build configuration.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- Maven model version (fixed at 4.0.0 for compatibility) -->
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Project Metadata -->
-    <groupId>com.student.management</groupId>
-    <artifactId>StudentManagementSystem</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <groupId>com.student.management</groupId>           <!-- Organization or group that owns the project -->
+    <artifactId>StudentManagementSystem</artifactId>    <!-- Project name -->
+    <version>1.0-SNAPSHOT</version>                      <!-- Version; 'SNAPSHOT' indicates work in progress -->
+    <packaging>jar</packaging>                           <!-- Packaging type for the build artifact -->
 
-    <!-- Java version and encoding -->
+    <!-- Properties: Configure Java version and file encoding -->
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <!-- Specify the Java version for compiling source code -->
+        <maven.compiler.source>21</maven.compiler.source>  <!-- Source compatibility -->
+        <maven.compiler.target>21</maven.compiler.target>  <!-- Target compatibility -->
+
+        <!-- Set the encoding for the project source files -->
+        <!-- UTF-8 ensures compatibility with international characters -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <!-- Dependency Management: Centralize dependency versioning -->
     <dependencyManagement>
         <dependencies>
-            <!-- MySQL Connector with dependency management -->
+            <!-- MySQL Connector: Database connectivity library -->
+            <!-- Defined in <dependencyManagement> to ensure version consistency across multiple modules -->
             <dependency>
                 <groupId>com.mysql</groupId>
                 <artifactId>mysql-connector-j</artifactId>
-                <version>9.2.0</version>
-                <scope>runtime</scope>
+                <version>9.2.0</version>                    <!-- Version managed globally -->
+                <scope>runtime</scope>                      <!-- Only used at runtime -->
             </dependency>
         </dependencies>
     </dependencyManagement>
 
+    <!-- Dependencies: External libraries required by the project -->
     <dependencies>
         <!-- MySQL Connector -->
+        <!-- Version is inherited from dependencyManagement -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
 
-        <!-- JUnit for testing -->
+        <!-- JUnit Jupiter API: Provides the core testing API for writing unit tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.10.0</version>
-            <scope>test</scope>
+            <version>5.12.1</version>
+            <scope>test</scope> <!-- Only used during testing, not included in production -->
         </dependency>
+
+        <!-- JUnit Jupiter Engine: Executes the tests written using JUnit API -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.0</version>
+            <version>5.12.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
+    <!-- Build: Configuration for the build process -->
     <build>
         <plugins>
-            <!-- Compiler Plugin -->
+            <!-- Maven Compiler Plugin -->
+            <!-- Compiles Java source code into bytecode -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
+                    <!-- Java version for compilation -->
                     <source>21</source>
                     <target>21</target>
+                    <!-- Ensure source files are read with UTF-8 encoding -->
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
 
-            <!-- Surefire Plugin for Running Tests -->
+            <!-- Maven Surefire Plugin -->
+            <!-- Runs unit tests during the build phase -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
+                    <!-- Include only test classes ending with 'Test.java' -->
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>

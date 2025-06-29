@@ -20,7 +20,11 @@ A beginner-friendly Java-based project that lets you manage student records via 
 
 Experience a quick look at the console interface:
 
-<img src="assets/console_demo.png" width="300">
+<div align="center">
+  <img src="assets/console_demo.png" width="300">
+  <br>
+  <em>Figure 1: Console-based student management interface</em>
+</div>
 
 ---
 
@@ -90,29 +94,23 @@ Follow these steps to set up the project:
 
 ---
 
-
 ## ⚙️ Features & Usage
 
 ### Basic Operations
 
 - **Adding a Student:**
     - The system will prompt you for:
-
         ```
         Enter student name: John Doe
         Enter age: 20
         Enter grade: A
-        
         ```
 
 - **Displaying Students:**
     - See a list of students with details:
-
         ```
         ID: 1 | Name: John Doe | Age: 20 | Grade: A
-        
         ```
-
 
 ### Advanced Features
 
@@ -126,19 +124,27 @@ Follow these steps to set up the project:
       Visualizes student grade patterns and trends.
 
     - 👥 **Age-Range Analysis:**
+      
+      Displays the distribution of students across different age groups.
+      
       <div align="center">
         <img src="assets/age_range_analysis.png" width="250">
+        <br>
+        <em>Figure 2: Age-range analysis of students</em>
       </div>  
-      Displays the distribution of students across different age groups.
 
     - 🔢 **Summary Statistics:**  
       Provides aggregate data like average age, total students, etc.
 
     - 🏆 **Top Performers Overview:**
+      
+      Highlights students with the highest academic performance.
+      
       <div align="center">
         <img src="assets/top_performers_overview.png" width="250">
+        <br>
+        <em>Figure 3: Top performers overview</em>
       </div>  
-      Highlights students with the highest academic performance.
 
 ---
 
@@ -165,7 +171,6 @@ StudentManagementSystem
 │   │       └── com.student.management      // Unit tests
 ├── pom.xml                                 // Maven configuration
 └── (other project files)
-
 ```
 
 ---
@@ -178,51 +183,3 @@ StudentManagementSystem
 - **Mar 21, 2025:** Configured JDBC integration & Maven dependencies.
 
 > ✅ Key takeaway: Develop incrementally, validate your code frequently, and build upon your successes!
->
-
----
-
-## 🚀 Future Roadmap
-
-- **GUI Upgrade:**
-    - Transition from a console-based UI to a modern GUI using JavaFX for a more intuitive experience.
-- **User Authentication:**
-    - Add role-based access (e.g., admin vs. student) for improved security.
-- **Executable JAR Build:**
-    - Package the application into an executable JAR file:
-        - Compile the code.
-        - Create a manifest file to specify the main class.
-        - Bundle everything into one standalone package.
-    - *Status:* Not yet implemented – this remains in the future roadmap.
-- **Testing Enhancements:**
-    - Introduce comprehensive unit tests using **JUnit 5** to ensure the reliability of core functionalities.
-
----
-
-## 📝 License
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)  
-This project is licensed under the MIT License. Feel free to modify and build upon it.
-
-```plaintext
-MIT License
-
-Copyright (c) 2025 Shreyan
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
