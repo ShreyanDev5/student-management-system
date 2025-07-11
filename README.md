@@ -53,47 +53,6 @@ Before you start, make sure you have:
 
 ---
 
-## 🔧 Installation & Setup
-
-Follow these steps to set up the project:
-
-1. **Clone the Repository:**
-    ```powershell
-    git clone https://github.com/ShreyanGit-5/student-management-system.git
-    ```
-
-2. **Set Up MySQL:**
-    - **Create a Database:**
-    ```sql
-    CREATE DATABASE student_db;
-    ```
-
-    - **Create a `students` Table:**
-    ```sql
-    CREATE TABLE students (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(50) NOT NULL,
-        age INT NOT NULL,
-        grade VARCHAR(2) NOT NULL
-    );
-    ```
-
-3. **Import the Project:**
-    - Open the project in IntelliJ IDEA (or your favorite IDE).
-
-4. **Configure the Database Connection:**
-    - Update the `database.properties` file with your credentials:
-    ```
-    db.url = jdbc:mysql://localhost:3306/student_db
-    db.user = root
-    db.password = your_password  # Replace with your actual password
-    ```
-
-5. **Run the Application:**
-    - In IntelliJ, select `Run > Main.java` to start the console app.
-
----
-
 ## ⚙️ Features & Usage
 
 ### Basic Operations
