@@ -1,0 +1,4 @@
+C:\Users\shrey\IdeaProjects\StudentManagementSystem\src\main\java\com\student\management\main\Main.java
+C:\Users\shrey\IdeaProjects\StudentManagementSystem\src\main\java\com\student\management\model\Student.java
+C:\Users\shrey\IdeaProjects\StudentManagementSystem\src\main\java\com\student\management\service\StudentManager.java
+C:\Users\shrey\IdeaProjects\StudentManagementSystem\src\main\java\com\student\management\util\DBConnection.java
