@@ -12,6 +12,7 @@ out/
 *.db
 *.sqlite
 *.sql
+!database/schema.sql
 *.lock
 *.gz
 

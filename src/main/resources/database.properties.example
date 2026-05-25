@@ -1,0 +1,17 @@
+# ====================================================================
+# Database connection properties for the Student Management System
+# ====================================================================
+# Instructions:
+# 1. Copy this file and rename it to 'database.properties' in the same folder.
+# 2. Update the credentials below to match your local MySQL configuration.
+# 3. Ensure the 'students_db' database is created using 'database/schema.sql'.
+# ====================================================================
+
+# JDBC connection URL (default points to local MySQL database 'students_db')
+db.url=jdbc:mysql://localhost:3306/students_db
+
+# MySQL server username
+db.username=root
+
+# MySQL server password
+db.password=your_password_here

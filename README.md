@@ -1,46 +1,77 @@
-# Student Management System
+# 📱 Student Management System
 
-Console-based Java application for managing student records stored in MySQL.
+A sleek, lightweight, console-based Java application for managing student records stored in a MySQL database. Built using standard JDBC connectivity with parameterized queries for robust and secure data access.
 
-## Features
+---
 
-- Add, view, search, update, and delete student records
-- Search by ID, name, or grade
-- Generate grade, age-range, summary, and top-performer reports
-- Use JDBC `PreparedStatement` queries for database access
+## 📸 Application Demos
 
-## Project Flow
+Here is the system in action, showing the robust terminal user interface and reporting engine:
 
-- `Main` shows the menu and reads user input
-- `StudentManager` validates input, runs SQL queries, and prints results
-- `Student` represents one student record in memory
-- `DBConnection` loads database settings and opens JDBC connections
+### 🎮 Main Interactive Console
+![Console Interface Demo](assets/console_demo.png)
 
-## Requirements
+### 🏆 Top Performers Overview
+![Top Performers Overview](assets/top_performers_overview.png)
 
-- Java 21
-- Maven 3.9+
-- MySQL running locally
+### 📊 Age-Range Analysis Report
+![Age-Range Analysis Report](assets/age_range_analysis.png)
 
-## Setup
+---
 
-1. Create a database named `students_db`.
-2. Create the `students` table:
+## ✨ Features
 
-```sql
-CREATE TABLE students (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    age INT NOT NULL,
-    grade VARCHAR(5) NOT NULL
-);
+- **🎓 Student Operations (CRUD):** Add new students, view all records, search dynamically by ID, name, or grade, update information, and remove records.
+- **📈 Advanced Reporting:** Generate real-time reports including grade distributions, age-range filters, summary statistics (averages, counts), and top 10 academic performers.
+- **🛡️ Secure Data Access:** Utilizes parameterized `PreparedStatement` JDBC queries to fully protect against SQL injection vulnerabilities.
+- **📁 Organized Structure:** Clean architectural separation of models, service layers, and configuration properties.
+
+---
+
+## 🛠️ Requirements
+
+- **Java Development Kit (JDK):** Version 21 or later
+- **Build Tool:** Maven 3.9+
+- **Database:** MySQL Server 8.0+
+
+---
+
+## 🚀 Setup & Installation
+
+### 1. Database Setup
+Ensure your MySQL server is running, and initialize the database schema using the script provided:
+```bash
+mysql -u root -p < database/schema.sql
+```
+*(Alternatively, copy and run the SQL commands from `database/schema.sql` in your database IDE like MySQL Workbench).*
+
+### 2. Configure Properties
+Create your local database configuration file from the template provided:
+1. Navigate to the resources folder: `src/main/resources`
+2. Duplicate `database.properties.example` and name the copy `database.properties`.
+3. Open `database.properties` and replace the default credentials with your MySQL server `db.username` and `db.password`.
+
+---
+
+## 🏃 Running the Application
+
+### Via IDE
+1. Open the project in your favorite Java IDE (e.g., IntelliJ IDEA, VS Code).
+2. Let the IDE import dependencies from `pom.xml`.
+3. Run `Main.java` inside the `com.student.management.main` package.
+
+### Via Command Line
+Compile and run the project using Maven:
+```powershell
+mvn clean compile exec:java -Dexec.mainClass="com.student.management.main.Main"
 ```
 
-3. Update `src/main/resources/database.properties` with your own MySQL credentials.
-4. Run `Main.java` from your IDE.
+---
 
-## Test
+## 🧪 Testing
 
+To run the unit tests:
 ```powershell
 mvn test
 ```
+
