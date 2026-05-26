@@ -6,57 +6,57 @@ import com.student.management.service.StudentManager;
 import java.util.Scanner;
 
 /**
- * Console entry point for the application.
- * Main only handles the menu and user interaction, then delegates the real work
- * to StudentManager, which talks to the database layer.
+ * Console entry point and user interaction controller for the application.
+ * Manages the CLI menu loop, accepts and processes user inputs, and delegates
+ * functional operations and database transactions to the {@link StudentManager} service.
  */
 public class Main
 {
 
     public static void main(String[] args)
     {
-        // Create scanner instance for user input and instantiate the student manager
+        // Setup console resources and the service manager instance
         Scanner scanner = new Scanner(System.in);
         StudentManager studentManager = new StudentManager();
 
-        // Display application header (runs once on startup)
+        // Print the welcome header splash once on application launch
         showHeader();
 
-        // Main loop: keep showing the menu until the user chooses to exit.
+        // Continuous application run loop: displays the menu and handles user commands
         while (true)
         {
-            // Display menu options for user
+            // Print available menu choices
             displayMenu();
 
-            // Read user input and trim any extra spaces
+            // Read the raw user selection and strip whitespace
             String input = scanner.nextLine().trim();
 
             try
             {
                 int choice = Integer.parseInt(input);
 
-                // Check if user wants to exit (option 0)
+                // Gracefully shut down and exit if user enters 0
                 if (choice == 0)
                 {
                     exitApplication(scanner);
                     return;
                 }
 
-                // Main stays small by forwarding each action to StudentManager.
+                // Dispatch the valid choice to the handler method to delegate execution
                 handleChoice(choice, scanner, studentManager);
             }
             catch (NumberFormatException e)
             {
-                // If input is not a valid number, notify user and prompt again
+                // Handle non-numeric console input elegantly without crashing the loop
                 System.out.println("\n🔴 Invalid input. Please enter a number between 0 and 11.");
             }
         }
     }
 
-    // ======================== Display Methods ========================
+    // ======================== Console Display Methods ========================
 
     /**
-     * Displays the application header.
+     * Displays the decorative application welcome header.
      */
     private static void showHeader()
     {
@@ -67,14 +67,14 @@ public class Main
     }
 
     /**
-     * Displays the menu options to the user.
+     * Displays the interactive main menu options to the console.
      */
     private static void displayMenu()
     {
         System.out.println("\n═════════════════════════════════════════════");
         System.out.println("\n⚠️  0. Exit Application");
 
-        // Student management section
+        // Operations section
         System.out.println("\n⚙️ STUDENT OPERATIONS:");
         System.out.println("  1. ➕ Add New Student");
         System.out.println("  2. 📃 View All Students");
@@ -84,7 +84,7 @@ public class Main
         System.out.println("  6. ❌ Remove Student by ID");
         System.out.println("  7. ✏️  Update Student Information");
 
-        // Reporting section
+        // Analytics and reports section
         System.out.println("\n📊 REPORTING FEATURES:");
         System.out.println("  8. 📈 Generate Grade Distribution Report");
         System.out.println("  9. 👥 Generate Age-Range Analysis");
@@ -95,14 +95,14 @@ public class Main
         System.out.print("Select an option (0-11): ");
     }
 
-    // ======================== Option Handling ========================
+    // ======================== Menu Dispatcher ========================
 
     /**
-     * Dispatches the user-selected option to the appropriate method.
+     * Routes the user's numeric choice to corresponding methods or service calls.
      *
-     * @param choice  The user-selected menu option.
-     * @param scanner Scanner object for reading user input.
-     * @param manager StudentManager instance handling student operations.
+     * @param choice  The verified numeric command chosen by the user
+     * @param scanner Scanner for scanning dynamic parameters inside helper methods
+     * @param manager Service layer instance to execute business commands
      */
     private static void handleChoice(int choice, Scanner scanner, StudentManager manager)
     {
@@ -147,13 +147,13 @@ public class Main
         }
     }
 
-    // ======================== Student Operations ========================
+    // ======================== Student Actions ========================
 
     /**
-     * Adds a new student by delegating input collection to the StudentManager.
+     * Initiates student creation by delegating to the StudentManager service class.
      *
-     * @param scanner Scanner object for user input.
-     * @param manager StudentManager instance to add the student.
+     * @param scanner Scanner for reading student properties
+     * @param manager Service instance handling database inserts
      */
     private static void addStudent(Scanner scanner, StudentManager manager)
     {
@@ -161,10 +161,10 @@ public class Main
     }
 
     /**
-     * Searches for a student by their unique ID and displays the result.
+     * Solicits a Student ID from user input and queries the database via the service layer.
      *
-     * @param scanner Scanner object for user input.
-     * @param manager StudentManager instance used to search the student.
+     * @param scanner Scanner for user ID entry
+     * @param manager Service instance handling query lookups
      */
     private static void searchStudentById(Scanner scanner, StudentManager manager)
     {
@@ -174,22 +174,22 @@ public class Main
         Student student = manager.searchById(id);
         if (student != null)
         {
-            // Display found student details
+            // Print the styled box layout of the found student card
             System.out.println(student);
         }
         else
         {
-            // Notify if no student is found with the provided ID
+            // Notify the user if no record matches the given ID
             System.out.println("\n❌ No student found with ID: " + id);
         }
     }
 
-    // ======================== Utility Methods ========================
+    // ======================== Lifecycle and Cleanup ========================
 
     /**
-     * Closes resources and gracefully exits the application.
+     * Closes the terminal Scanner resource and prints a goodbye message before exiting.
      *
-     * @param scanner Scanner object to be closed.
+     * @param scanner The Scanner reference to close
      */
     private static void exitApplication(Scanner scanner)
     {

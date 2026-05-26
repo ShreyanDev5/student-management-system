@@ -15,34 +15,32 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * Main sends menu actions to this class.
- * Each method here validates input, opens a JDBC connection through
- * DBConnection,
- * runs the SQL for that action, converts database rows into Student objects,
- * and
- * prints the result back to the console.
+ * Service class handling student records management, data validation, and database operations.
+ * Acts as the intermediate business layer between the CLI interface (Main) and the persistence layer.
+ * Performs user input validation, manages JDBC resources using try-with-resources blocks,
+ * maps ResultSet records to domain models, and outputs operations outcomes and analytics to the console.
  */
 public class StudentManager
 {
     // -------------------------------------------------
-    // Display Methods
+    // Console Display Methods
     // -------------------------------------------------
 
     /**
-     * Displays a list of students in a formatted table.
+     * Prints a collection of student records to the console in a structured ASCII table.
      *
-     * @param students List of Student objects to be displayed.
+     * @param students List of Student objects to be formatted and printed
      */
     public void displayStudents(List<Student> students)
     {
         System.out.println("\n");
 
-        // Table header
+        // Print table header row
         System.out.println("--------------------------------------------");
         System.out.printf("%-8s | %-18s | %-4s | %-5s%n", "ID", "Name", "Age", "Grade");
         System.out.println("--------------------------------------------");
 
-        // Loop through and display each student
+        // Format and print each student record as a row in the table
         for (Student student : students)
         {
             System.out.printf("%-8d | %-18s | %-4d | %-5s%n",
@@ -53,7 +51,7 @@ public class StudentManager
         }
         System.out.println("--------------------------------------------");
 
-        // Notify if no records exist
+        // Inform the user if the list is empty
         if (students.isEmpty())
         {
             System.out.println("\n❌ No student records found.");
@@ -61,25 +59,27 @@ public class StudentManager
     }
 
     // -------------------------------------------------
-    // CRUD Operations
+    // CRUD Operations (Create, Read, Update, Delete)
     // -------------------------------------------------
 
     /**
-     * Adds a new student to the database by reading input from the user.
+     * Solicits validated student details (name, age, grade) and inserts a new student record.
+     * Note: The database automatically generates the unique student ID.
      *
-     * @param scanner Scanner object to capture user input.
+     * @param scanner Scanner instance to capture input fields
      */
     public void addStudentFromInput(Scanner scanner)
     {
         System.out.println("\nPlease enter the student details:");
 
-        // The database generates the ID, so the user only enters the editable fields.
+        // Solicit and validate user input parameters sequentially
         String name = validateName(scanner);
         int age = validateAge(scanner);
         String grade = validateGrade(scanner);
 
         String query = "INSERT INTO students (name, age, grade) VALUES (?, ?, ?)";
 
+        // Execute parameterized insert statement using try-with-resources for resource cleanup
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(query))
         {
@@ -100,23 +100,24 @@ public class StudentManager
         catch (SQLException e)
         {
             System.out.println("❌ Database error: Unable to add student. Please try again.");
-            e.printStackTrace(); // Replace with proper logging in production
+            e.printStackTrace(); // TODO: Integrate a professional logging library for production environments
         }
     }
 
     /**
-     * Retrieves and displays all student records from the database.
+     * Queries and displays all student records stored in the database.
      */
     public void viewAllStudents()
     {
         String sql = "SELECT * FROM students";
         List<Student> students = new ArrayList<>();
 
+        // Fetch records and automatically release JDBC statements and connection objects
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery())
         {
-            // Build list of students from result set
+            // Iterate over the result set to construct the list of student domain models
             while (rs.next())
             {
                 students.add(new Student(
@@ -135,10 +136,10 @@ public class StudentManager
     }
 
     /**
-     * Searches for a student by their ID.
+     * Queries the database for a student record matching a unique ID.
      *
-     * @param id The student's ID to search for.
-     * @return Student object if found, null otherwise.
+     * @param id The unique identifier of the target student
+     * @return Student domain model if found, null otherwise
      */
     public Student searchById(int id)
     {
@@ -168,10 +169,9 @@ public class StudentManager
     }
 
     /**
-     * Searches for students by name (supports partial matches) and displays the
-     * results.
+     * Queries and displays student records matching a name filter (supports partial matches via SQL LIKE).
      *
-     * @param scanner Scanner object to capture user input.
+     * @param scanner Scanner instance to capture name substring
      */
     public void searchByName(Scanner scanner)
     {
@@ -184,6 +184,7 @@ public class StudentManager
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql))
         {
+            // Bind input using standard SQL wildcards for partial match filtering
             ps.setString(1, "%" + name + "%");
             ResultSet rs = ps.executeQuery();
 
@@ -205,9 +206,9 @@ public class StudentManager
     }
 
     /**
-     * Searches for students by grade and displays matching results.
+     * Queries and displays student records matching a specific academic grade.
      *
-     * @param scanner Scanner object to capture user input.
+     * @param scanner Scanner instance to capture grade code
      */
     public void searchByGrade(Scanner scanner)
     {
@@ -241,9 +242,9 @@ public class StudentManager
     }
 
     /**
-     * Removes a student record from the database by ID.
+     * Deletes a student record from the database based on a validated ID.
      *
-     * @param scanner Scanner object to capture user input.
+     * @param scanner Scanner instance to capture target ID
      */
     public void removeStudentById(Scanner scanner)
     {
@@ -258,6 +259,7 @@ public class StudentManager
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
 
+            // Verify if the deletion affected any rows in the database
             if (rowsAffected > 0)
             {
                 System.out.println("\n✅ Student removed successfully.");
@@ -275,16 +277,16 @@ public class StudentManager
     }
 
     /**
-     * Updates a student's details by ID.
+     * Updates an existing student record with new values for name, age, and grade.
      *
-     * @param scanner Scanner object to capture user input.
+     * @param scanner Scanner instance to capture ID and new field parameters
      */
     public void updateStudentById(Scanner scanner)
     {
         System.out.print("\nEnter student ID to update: ");
         int id = validateId(scanner);
 
-        // Fetch existing student record
+        // Fetch current record to ensure target student exists before soliciting updates
         Student student = searchById(id);
         if (student == null)
         {
@@ -329,11 +331,11 @@ public class StudentManager
     // -------------------------------------------------
 
     /**
-     * Validates a student ID ensuring it is a positive integer.
-     * This method is used for update and removal operations.
+     * Captures and validates a Student ID, enforcing positive integer inputs.
+     * Recursively prompts user until input is valid.
      *
-     * @param scanner Scanner object to capture user input.
-     * @return Validated student ID.
+     * @param scanner Scanner instance to capture input
+     * @return int a validated positive integer ID
      */
     public static int validateId(Scanner scanner)
     {
@@ -359,10 +361,10 @@ public class StudentManager
     }
 
     /**
-     * Validates the student's name ensuring only letters and spaces are allowed.
+     * Captures and validates a Student Name, enforcing alphabetical characters and spaces only.
      *
-     * @param scanner Scanner object to capture user input.
-     * @return Validated student name.
+     * @param scanner Scanner instance to capture input
+     * @return String a validated student name
      */
     private String validateName(Scanner scanner)
     {
@@ -370,6 +372,7 @@ public class StudentManager
         {
             System.out.print("Enter Name (letters only): ");
             String name = scanner.nextLine().trim();
+            // Validate name pattern via regular expression (letters and spaces only)
             if (!name.isEmpty() && Pattern.matches("^[a-zA-Z\\s]+$", name))
             {
                 return name;
@@ -379,10 +382,10 @@ public class StudentManager
     }
 
     /**
-     * Validates the student's age ensuring it is between 5 and 120.
+     * Captures and validates a Student Age, enforcing ranges between 5 and 120.
      *
-     * @param scanner Scanner object to capture user input.
-     * @return Validated age.
+     * @param scanner Scanner instance to capture input
+     * @return int a validated student age
      */
     private int validateAge(Scanner scanner)
     {
@@ -407,10 +410,10 @@ public class StudentManager
     }
 
     /**
-     * Validates the student's grade ensuring it matches allowed values.
+     * Captures and validates a Student Grade, enforcing allowed grade options.
      *
-     * @param scanner Scanner object to capture user input.
-     * @return Validated grade.
+     * @param scanner Scanner instance to capture input
+     * @return String validated uppercase grade
      */
     private String validateGrade(Scanner scanner)
     {
@@ -418,6 +421,7 @@ public class StudentManager
         {
             System.out.print("Enter Grade (O, E, A, B, C, D, or F): ");
             String grade = scanner.nextLine().trim().toUpperCase();
+            // Check grade validity against defined pattern
             if (Pattern.matches("^(O|E|A|B|C|D|F)$", grade))
             {
                 return grade;
@@ -427,12 +431,11 @@ public class StudentManager
     }
 
     // -------------------------------------------------
-    // Reporting Features
+    // Reporting and Analytics Features
     // -------------------------------------------------
 
     /**
-     * Generates and displays a grade distribution report.
-     * Groups students by grade and shows the count for each grade.
+     * Groups students by grade, aggregates the counts, and displays the distribution report.
      */
     public void generateGradeReport()
     {
@@ -451,7 +454,7 @@ public class StudentManager
                 gradeCount.put(grade, count);
             }
 
-            // Display the report
+            // Print the distribution totals or error message if empty
             if (gradeCount.isEmpty())
             {
                 System.out.println("❌ No students found.");
@@ -469,9 +472,9 @@ public class StudentManager
     }
 
     /**
-     * Generates and displays a report for students within a specified age range.
+     * Queries and displays all student records within user-specified minimum and maximum age bounds.
      *
-     * @param scanner Scanner object to capture user input.
+     * @param scanner Scanner instance to capture bounds parameters
      */
     public void generateAgeRangeReport(Scanner scanner)
     {
@@ -481,7 +484,7 @@ public class StudentManager
         System.out.println("\nEnter maximum age: ");
         int maxAge = validateAge(scanner);
 
-        // Ensure valid range: min should be less than or equal to max.
+        // Ensure boundary consistency (minimum age cannot exceed maximum age)
         while (minAge > maxAge)
         {
             System.out.println("\n⚠️ Please enter a valid age range.");
@@ -521,8 +524,7 @@ public class StudentManager
     }
 
     /**
-     * Generates a summary statistics report including total students,
-     * average age, and grade distribution.
+     * Computes and prints core student body aggregate statistics (student count, average age, grade distribution).
      */
     public void generateSummaryStatisticsReport()
     {
@@ -534,7 +536,7 @@ public class StudentManager
 
         try (Connection conn = DBConnection.getConnection())
         {
-            // Total number of students
+            // Step 1: Calculate total count of enrolled students
             int totalStudents = 0;
             try (PreparedStatement ps = conn.prepareStatement(studentCountSql);
                     ResultSet rs = ps.executeQuery())
@@ -551,7 +553,7 @@ public class StudentManager
             }
             System.out.println("Total Students: " + totalStudents);
 
-            // Average age
+            // Step 2: Compute average student age
             double averageAge = 0.0;
             try (PreparedStatement ps = conn.prepareStatement(avgAgeSql);
                     ResultSet rs = ps.executeQuery())
@@ -563,7 +565,7 @@ public class StudentManager
             }
             System.out.printf("Average Age: %.2f%n", averageAge);
 
-            // Display grade distribution by reusing the grade report method
+            // Step 3: Print grade breakdown by delegating to the grade report method
             System.out.println("\nGrade Distribution:");
             generateGradeReport();
         }
@@ -575,12 +577,11 @@ public class StudentManager
     }
 
     /**
-     * Generates and displays the top performers report based on grade priority.
-     * Orders students according to a defined grade priority and displays the top
-     * 10.
+     * Queries and displays top performing students according to a prioritized weight map of grades (up to top 10).
      */
     public void generateTopPerformersReport()
     {
+        // SQL query sorting student records descending by explicit grade weight definition
         String sql = """
                 SELECT id, name, age, grade
                 FROM students

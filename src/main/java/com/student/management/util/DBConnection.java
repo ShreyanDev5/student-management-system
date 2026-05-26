@@ -7,16 +7,16 @@ import java.util.Properties;
 import java.io.InputStream;
 
 /**
- * Central place for database access.
- * StudentManager calls getConnection() whenever it needs to talk to MySQL, and
- * this class loads the connection settings from database.properties once.
+ * Utility class providing centralized database connectivity.
+ * Loads JDBC connection properties from 'database.properties' once on class initialization
+ * and supplies active database connection instances to the application.
  */
 public class DBConnection
 {
-    // Properties to hold database configurations
+    // Caches loaded database configuration properties (URL, username, password)
     private static final Properties props = new Properties();
 
-    // Static block to load properties from the file once when the class is loaded
+    // Statically loads database credentials from resource properties on class load
     static
     {
         try (InputStream input = DBConnection.class.getClassLoader().getResourceAsStream("database.properties"))
@@ -38,10 +38,10 @@ public class DBConnection
     }
 
     /**
-     * Establishes and returns a connection to the database.
+     * Creates and returns a new connection to the configured database.
      *
-     * @return Connection object
-     * @throws SQLException if a database access error occurs
+     * @return Connection active JDBC connection to the target database
+     * @throws SQLException if connection properties are missing or database connection fails
      */
     public static Connection getConnection() throws SQLException
     {
@@ -49,7 +49,7 @@ public class DBConnection
         String username = props.getProperty("db.username");
         String password = props.getProperty("db.password");
 
-        // Validate properties
+        // Ensure database credentials and URL are present in config properties
         if (url == null || username == null || password == null)
         {
             throw new SQLException("Database credentials are missing in the properties file.");
