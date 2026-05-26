@@ -10,9 +10,11 @@ import java.util.Scanner;
  * Main only handles the menu and user interaction, then delegates the real work
  * to StudentManager, which talks to the database layer.
  */
-public class Main {
+public class Main
+{
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         // Create scanner instance for user input and instantiate the student manager
         Scanner scanner = new Scanner(System.in);
         StudentManager studentManager = new StudentManager();
@@ -21,25 +23,30 @@ public class Main {
         showHeader();
 
         // Main loop: keep showing the menu until the user chooses to exit.
-        while (true) {
+        while (true)
+        {
             // Display menu options for user
             displayMenu();
 
             // Read user input and trim any extra spaces
             String input = scanner.nextLine().trim();
 
-            try {
+            try
+            {
                 int choice = Integer.parseInt(input);
 
                 // Check if user wants to exit (option 0)
-                if (choice == 0) {
+                if (choice == 0)
+                {
                     exitApplication(scanner);
                     return;
                 }
 
                 // Main stays small by forwarding each action to StudentManager.
                 handleChoice(choice, scanner, studentManager);
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e)
+            {
                 // If input is not a valid number, notify user and prompt again
                 System.out.println("\n🔴 Invalid input. Please enter a number between 0 and 11.");
             }
@@ -51,7 +58,8 @@ public class Main {
     /**
      * Displays the application header.
      */
-    private static void showHeader() {
+    private static void showHeader()
+    {
         System.out.println("\n");
         System.out.println("╔═══════════════════════════════════════════╗");
         System.out.println("║             📱 STUDENT MANAGER            ║");
@@ -61,7 +69,8 @@ public class Main {
     /**
      * Displays the menu options to the user.
      */
-    private static void displayMenu() {
+    private static void displayMenu()
+    {
         System.out.println("\n═════════════════════════════════════════════");
         System.out.println("\n⚠️  0. Exit Application");
 
@@ -95,8 +104,10 @@ public class Main {
      * @param scanner Scanner object for reading user input.
      * @param manager StudentManager instance handling student operations.
      */
-    private static void handleChoice(int choice, Scanner scanner, StudentManager manager) {
-        switch (choice) {
+    private static void handleChoice(int choice, Scanner scanner, StudentManager manager)
+    {
+        switch (choice)
+        {
             case 1:
                 addStudent(scanner, manager);
                 break;
@@ -144,7 +155,8 @@ public class Main {
      * @param scanner Scanner object for user input.
      * @param manager StudentManager instance to add the student.
      */
-    private static void addStudent(Scanner scanner, StudentManager manager) {
+    private static void addStudent(Scanner scanner, StudentManager manager)
+    {
         manager.addStudentFromInput(scanner);
     }
 
@@ -154,15 +166,19 @@ public class Main {
      * @param scanner Scanner object for user input.
      * @param manager StudentManager instance used to search the student.
      */
-    private static void searchStudentById(Scanner scanner, StudentManager manager) {
+    private static void searchStudentById(Scanner scanner, StudentManager manager)
+    {
         System.out.print("Enter the ID of the student to search: ");
         int id = StudentManager.validateId(scanner);
 
         Student student = manager.searchById(id);
-        if (student != null) {
+        if (student != null)
+        {
             // Display found student details
             System.out.println(student);
-        } else {
+        }
+        else
+        {
             // Notify if no student is found with the provided ID
             System.out.println("\n❌ No student found with ID: " + id);
         }
@@ -175,7 +191,8 @@ public class Main {
      *
      * @param scanner Scanner object to be closed.
      */
-    private static void exitApplication(Scanner scanner) {
+    private static void exitApplication(Scanner scanner)
+    {
         scanner.close();
         System.out.println("\nExiting the system. Goodbye 👋");
     }

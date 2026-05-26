@@ -6,7 +6,8 @@ package com.student.management.model;
  * uses
  * them when printing tables or detailed student information.
  */
-public class Student {
+public class Student
+{
     // Instance variables to hold student details
     private int id;
     private String name;
@@ -21,7 +22,8 @@ public class Student {
      * @param age   Student's age
      * @param grade Student's grade
      */
-    public Student(int id, String name, int age, String grade) {
+    public Student(int id, String name, int age, String grade)
+    {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -30,19 +32,23 @@ public class Student {
 
     // ===== Getters: Retrieve student information =====
 
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public int getAge() {
+    public int getAge()
+    {
         return age;
     }
 
-    public String getGrade() {
+    public String getGrade()
+    {
         return grade;
     }
 
@@ -54,7 +60,8 @@ public class Student {
      * @return Formatted student information
      */
     @Override
-    public String toString() {
+    public String toString()
+    {
         return String.format(
                 """
                         ┌─────────────────────────────┐
