@@ -6,48 +6,57 @@ import com.student.management.service.StudentManager;
 import java.util.Scanner;
 
 /**
- * Console entry point and user interaction controller for the application.
- * Manages the CLI menu loop, accepts and processes user inputs, and delegates
- * functional operations and database transactions to the {@link StudentManager} service.
+ * The entry point and control center of our program.
+ * 
+ * Think of this class like a friendly receptionist or a TV menu:
+ * 1. It welcomes the user with a nice banner.
+ * 2. It continuously displays a list of options (like adding a student or viewing reports).
+ * 3. It waits for the user to type their choice, converts it to a number, and delegates 
+ *    the actual work to the StudentManager service layer.
+ * 
+ * For beginners: This class contains the special "main" method, which is where Java starts 
+ * running our application. It uses a "while(true)" loop to keep the menu active so the program 
+ * doesn't close after doing just one thing.
  */
 public class Main
 {
 
     public static void main(String[] args)
     {
-        // Setup console resources and the service manager instance
+        // A Scanner reads what the user types. StudentManager is the brain that does the actual work.
         Scanner scanner = new Scanner(System.in);
         StudentManager studentManager = new StudentManager();
 
-        // Print the welcome header splash once on application launch
+        // Draws the beautiful welcome title card on the screen.
         showHeader();
 
-        // Continuous application run loop: displays the menu and handles user commands
+        // An infinite loop! This keeps the menu running over and over until the user chooses to exit (0).
         while (true)
         {
-            // Print available menu choices
+            // Show the numbered menu of student operations and reports.
             displayMenu();
 
-            // Read the raw user selection and strip whitespace
+            // Read what the user typed and remove any accidental leading or trailing spaces.
             String input = scanner.nextLine().trim();
 
             try
             {
+                // Convert the typed text (String) into a whole number (int).
                 int choice = Integer.parseInt(input);
 
-                // Gracefully shut down and exit if user enters 0
+                // If the user selects 0, close the program nicely.
                 if (choice == 0)
                 {
                     exitApplication(scanner);
-                    return;
+                    return; // Exits the main method, stopping the program!
                 }
 
-                // Dispatch the valid choice to the handler method to delegate execution
+                // Route the number chosen by the user to the correct operation.
                 handleChoice(choice, scanner, studentManager);
             }
             catch (NumberFormatException e)
             {
-                // Handle non-numeric console input elegantly without crashing the loop
+                // If the user typed letters instead of a number, print an error instead of crashing!
                 System.out.println("\n🔴 Invalid input. Please enter a number between 0 and 11.");
             }
         }
@@ -56,7 +65,7 @@ public class Main
     // ======================== Console Display Methods ========================
 
     /**
-     * Displays the decorative application welcome header.
+     * Prints a beautiful, decorated welcome banner at the very start of the program.
      */
     private static void showHeader()
     {
@@ -67,12 +76,12 @@ public class Main
     }
 
     /**
-     * Displays the interactive main menu options to the console.
+     * Prints the numbered options list (0 to 11) for student operations and reporting features.
      */
     private static void displayMenu()
     {
         System.out.println("\n═════════════════════════════════════════════");
-        System.out.println("\n⚠️  0. Exit Application");
+        System.out.println("\n⚠️ 0. Exit Application");
 
         // Operations section
         System.out.println("\n⚙️ STUDENT OPERATIONS:");
@@ -98,11 +107,12 @@ public class Main
     // ======================== Menu Dispatcher ========================
 
     /**
-     * Routes the user's numeric choice to corresponding methods or service calls.
+     * Acts as a switcher/router. It takes the number chosen by the user and calls the correct 
+     * action in our StudentManager brain.
      *
-     * @param choice  The verified numeric command chosen by the user
-     * @param scanner Scanner for scanning dynamic parameters inside helper methods
-     * @param manager Service layer instance to execute business commands
+     * @param choice  The menu option number chosen by the user (1 to 11)
+     * @param scanner The Scanner object to read subsequent inputs inside the actions
+     * @param manager Our StudentManager service instance
      */
     private static void handleChoice(int choice, Scanner scanner, StudentManager manager)
     {
@@ -150,10 +160,10 @@ public class Main
     // ======================== Student Actions ========================
 
     /**
-     * Initiates student creation by delegating to the StudentManager service class.
+     * Tells the student manager to start the steps for adding a new student.
      *
-     * @param scanner Scanner for reading student properties
-     * @param manager Service instance handling database inserts
+     * @param scanner Scanner to read input
+     * @param manager Service instance
      */
     private static void addStudent(Scanner scanner, StudentManager manager)
     {
@@ -161,10 +171,10 @@ public class Main
     }
 
     /**
-     * Solicits a Student ID from user input and queries the database via the service layer.
+     * Asks the user for an ID, searches for that student, and prints their details if found.
      *
-     * @param scanner Scanner for user ID entry
-     * @param manager Service instance handling query lookups
+     * @param scanner Scanner to read the ID
+     * @param manager Service instance to search the database
      */
     private static void searchStudentById(Scanner scanner, StudentManager manager)
     {
@@ -187,9 +197,12 @@ public class Main
     // ======================== Lifecycle and Cleanup ========================
 
     /**
-     * Closes the terminal Scanner resource and prints a goodbye message before exiting.
+     * Safely closes the Scanner resource and prints a warm farewell message.
+     * 
+     * For beginners: It is always good practice to close resources like Scanners or database 
+     * connections when we are done using them to keep our computer's memory clean and happy.
      *
-     * @param scanner The Scanner reference to close
+     * @param scanner The Scanner tool to close
      */
     private static void exitApplication(Scanner scanner)
     {
