@@ -9,13 +9,13 @@ A console-based Java application for managing student records in a MySQL databas
 Here are screenshots of the console interface and reporting features:
 
 ### 🎮 Main Interactive Console
-<img src="assets/console_demo.png" alt="Console Interface Demo" width="600">
+<img src="assets/console_demo.png" alt="Console Interface Demo" width="350">
 
 ### 🏆 Top Performers Overview
-<img src="assets/top_performers_overview.png" alt="Top Performers Overview" width="600">
+<img src="assets/top_performers_overview.png" alt="Top Performers Overview" width="350">
 
 ### 📊 Age-Range Analysis Report
-<img src="assets/age_range_analysis.png" alt="Age-Range Analysis Report" width="600">
+<img src="assets/age_range_analysis.png" alt="Age-Range Analysis Report" width="350">
 
 ---
 
