@@ -1,68 +1,67 @@
 # 📱 Student Management System
 
-A sleek, lightweight, console-based Java application for managing student records stored in a MySQL database. Built using standard JDBC connectivity with parameterized queries for robust and secure data access.
+A console-based Java application for managing student records in a MySQL database. It uses JDBC with parameterized queries for secure database access.
 
 ---
 
 ## 📸 Application Demos
 
-Here is the system in action, showing the robust terminal user interface and reporting engine:
+Here are screenshots of the console interface and reporting features:
 
 ### 🎮 Main Interactive Console
-![Console Interface Demo](assets/console_demo.png)
+<img src="assets/console_demo.png" alt="Console Interface Demo" width="600">
 
 ### 🏆 Top Performers Overview
-![Top Performers Overview](assets/top_performers_overview.png)
+<img src="assets/top_performers_overview.png" alt="Top Performers Overview" width="600">
 
 ### 📊 Age-Range Analysis Report
-![Age-Range Analysis Report](assets/age_range_analysis.png)
+<img src="assets/age_range_analysis.png" alt="Age-Range Analysis Report" width="600">
 
 ---
 
 ## ✨ Features
 
-- **🎓 Student Operations (CRUD):** Add new students, view all records, search dynamically by ID, name, or grade, update information, and remove records.
-- **📈 Advanced Reporting:** Generate real-time reports including grade distributions, age-range filters, summary statistics (averages, counts), and top 10 academic performers.
-- **🛡️ Secure Data Access:** Utilizes parameterized `PreparedStatement` JDBC queries to fully protect against SQL injection vulnerabilities.
-- **📁 Organized Structure:** Clean architectural separation of models, service layers, and configuration properties.
+- **🎓 Student Management (CRUD):** Add, view, search (by ID, name, or grade), update, and delete student records.
+- **📈 Reporting:** Generate reports for grade distribution, age ranges, summary statistics (averages, counts), and the top 10 performers.
+- **🛡️ Secure Database Queries:** Uses JDBC `PreparedStatement` to protect against SQL injection.
+- **📁 Clean Architecture:** Separates model, service, and database configuration layers.
 
 ---
 
 ## 🛠️ Requirements
 
-- **Java Development Kit (JDK):** Version 21 or later
-- **Build Tool:** Maven 3.9+
-- **Database:** MySQL Server 8.0+
+- **Java Development Kit (JDK):** 21 or later
+- **Maven:** 3.9+
+- **MySQL Server:** 8.0+
 
 ---
 
 ## 🚀 Setup & Installation
 
 ### 1. Database Setup
-Ensure your MySQL server is running, and initialize the database schema using the script provided:
+Start MySQL and initialize the database using the provided script:
 ```bash
 mysql -u root -p < database/schema.sql
 ```
-*(Alternatively, copy and run the SQL commands from `database/schema.sql` in your database IDE like MySQL Workbench).*
+*(Alternatively, run the SQL commands from `database/schema.sql` inside your SQL client).*
 
 ### 2. Configure Properties
-Create your local database configuration file from the template provided:
-1. Navigate to the resources folder: `src/main/resources`
-2. Duplicate `database.properties.example` and name the copy `database.properties`.
-3. Open `database.properties` and replace the default credentials with your MySQL server `db.username` and `db.password`.
+1. Go to `src/main/resources`.
+2. Copy `database.properties.example` and rename the copy to `database.properties`.
+3. Open `database.properties` and update `db.username` and `db.password` with your MySQL credentials.
 
 ---
 
 ## 🏃 Running the Application
 
-### Via IDE
-1. Open the project in your favorite Java IDE (e.g., IntelliJ IDEA, VS Code).
-2. Let the IDE import dependencies from `pom.xml`.
-3. Run `Main.java` inside the `com.student.management.main` package.
+### Using an IDE
+1. Open the project in your IDE (e.g., IntelliJ IDEA, Eclipse, or VS Code).
+2. Allow the IDE to import the Maven project dependencies.
+3. Run the `Main.java` class located in `src/main/java/com/student/management/main/Main.java`.
 
-### Via Command Line
-Compile and run the project using Maven:
-```powershell
+### Using the Command Line
+Compile and run the app with Maven:
+```bash
 mvn clean compile exec:java -Dexec.mainClass="com.student.management.main.Main"
 ```
 
@@ -70,8 +69,8 @@ mvn clean compile exec:java -Dexec.mainClass="com.student.management.main.Main"
 
 ## 🧪 Testing
 
-To run the unit tests:
-```powershell
+Run the unit tests using Maven:
+```bash
 mvn test
 ```
 
