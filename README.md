@@ -38,22 +38,22 @@ A CLI Java application for managing student records with MySQL and JDBC. Feature
 
 ```text
 student-management-system/
-├── assets/                           # Demo screenshots and branding assets
+├── assets/                             # Demo screenshots and branding assets
 ├── database/
-│   └── schema.sql                    # MySQL database schema and table definitions
+│   └── schema.sql                      # MySQL schema and table definitions
 ├── src/
 │   ├── main/
-│   │   ├── java/com/student/management/
-│   │   │   ├── main/Main.java        # CLI menu loop and interaction handler
-│   │   │   ├── model/Student.java    # Student entity data model
-│   │   │   ├── service/StudentManager.java # Business logic, validation, and SQL queries
-│   │   │   └── util/DBConnection.java # JDBC connection loader and session manager
+│   │   ├── java/.../management/
+│   │   │   ├── main/Main.java          # CLI menu loop and interaction handler
+│   │   │   ├── model/Student.java      # Student entity data model
+│   │   │   ├── service/StudentManager.java # Business logic and SQL queries
+│   │   │   └── util/DBConnection.java  # JDBC connection loader and manager
 │   │   └── resources/
 │   │       └── database.properties.example # DB credentials configuration template
-│   └── test/java/com/student/management/
-│       └── service/StudentManagerTest.java # Unit test suite for service layer
-├── pom.xml                           # Maven project dependencies and build configuration
-└── README.md                         # Project documentation
+│   └── test/java/.../
+│       └── StudentManagerTest.java     # Unit test suite for service layer
+├── pom.xml                             # Maven build and dependency configuration
+└── README.md                           # Project documentation
 ```
 
 ---
