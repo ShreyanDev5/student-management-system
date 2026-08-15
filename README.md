@@ -1,36 +1,36 @@
-# Student Management System
+# <img src="assets/logo.svg" width="28" height="28" style="vertical-align: middle;" /> Student Management System
 
 A CLI Java application for managing student records with MySQL and JDBC. Features input validation, parameterized queries, and analytics reports.
 
+[![Interface](https://img.shields.io/badge/Interface-CLI%20%2F%20Terminal-1f2937?style=flat-square&logo=gnubash&logoColor=white)](#)
+[![Database](https://img.shields.io/badge/Database-MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com/)
+
 ---
 
-## Demo
-
-<div align="center">
+## Preview
 
 | Console Menu | Top Performers | Age Analysis |
 | :---: | :---: | :---: |
-| <img src="assets/console_demo.png" alt="Console Interface" width="280"> | <img src="assets/top_performers_overview.png" alt="Top Performers" width="280"> | <img src="assets/age_range_analysis.png" alt="Age-Range Analysis" width="280"> |
-
-</div>
+| <img src="assets/console_demo.png" width="280" alt="Console Menu" /> | <img src="assets/top_performers_overview.png" width="280" alt="Top Performers" /> | <img src="assets/age_range_analysis.png" width="280" alt="Age Analysis" /> |
 
 ---
 
 ## Features
 
-- **CRUD Operations:** Add, view, update, and delete student records.
-- **Targeted Search:** Filter by ID, partial name (`LIKE`), or grade (`O`, `E`, `A`, `B`, `C`, `D`, `F`).
-- **Analytics & Reports:** Grade distribution, age-range filtering, summary statistics (count, average age), and top 10 performers.
-- **Input Validation:** Strict regex and boundary checks for names, age (5–120), and valid grades.
-- **SQL Security:** Parameterized `PreparedStatement` queries across all operations to prevent SQL injection.
+- **CRUD Operations**: Add, view, update, and delete student records with automated database synchronization.
+- **Targeted Search**: Query student records by unique ID, partial name matching (`LIKE`), or letter grade (`O`, `E`, `A`, `B`, `C`, `D`, `F`).
+- **Analytics & Reports**: Generate grade distribution breakdowns, age-range filtering, summary statistics (average age, total count), and top 10 academic performers.
+- **Input Validation**: Enforce alphabetical regex rules on names, validate age boundaries (5–120), and sanitize grade inputs.
+- **SQL Security**: Execute all database transactions through parameterized `PreparedStatement` queries to prevent SQL injection vulnerabilities.
 
 ---
 
 ## Tech Stack
 
-| Java | Database | Driver | Build | Testing |
-| :--- | :--- | :--- | :--- | :--- |
-| Java 21 | MySQL 8.0+ | MySQL Connector/J 9.2.0 | Maven 3.9+ | JUnit 5 (Jupiter 5.12.1) |
+- **Backend**: Java 21, JDBC (MySQL Connector/J 9.2.0), Maven 3.9+, JUnit 5 (Jupiter 5.12.1)
+- **Database**: MySQL 8.0+
+- **Interface**: Interactive Terminal / Command-Line Interface (CLI)
+- **AI Tooling**: Antigravity, Cursor
 
 ---
 
@@ -38,42 +38,74 @@ A CLI Java application for managing student records with MySQL and JDBC. Feature
 
 ```text
 student-management-system/
-├── assets/                           # Screenshots
-├── database/schema.sql               # DB schema & tables
-├── src/main/java/.../
-│   ├── main/Main.java                # CLI menu loop
-│   ├── model/Student.java            # Student entity model
-│   ├── service/StudentManager.java   # Business logic & SQL queries
-│   └── util/DBConnection.java        # JDBC connection loader
-├── src/main/resources/
-│   └── database.properties.example   # DB configuration template
-└── pom.xml
+├── assets/                           # Demo screenshots and branding assets
+├── database/
+│   └── schema.sql                    # MySQL database schema and table definitions
+├── src/
+│   ├── main/
+│   │   ├── java/com/student/management/
+│   │   │   ├── main/Main.java        # CLI menu loop and interaction handler
+│   │   │   ├── model/Student.java    # Student entity data model
+│   │   │   ├── service/StudentManager.java # Business logic, validation, and SQL queries
+│   │   │   └── util/DBConnection.java # JDBC connection loader and session manager
+│   │   └── resources/
+│   │       └── database.properties.example # DB credentials configuration template
+│   └── test/java/com/student/management/
+│       └── service/StudentManagerTest.java # Unit test suite for service layer
+├── pom.xml                           # Maven project dependencies and build configuration
+└── README.md                         # Project documentation
 ```
 
 ---
 
-## Quickstart
+## Getting Started
 
-### 1. Initialize Database
-```bash
-# Windows (PowerShell)
-Get-Content database/schema.sql | mysql -u root -p
+### Prerequisites
 
-# macOS / Linux / Git Bash
-mysql -u root -p < database/schema.sql
-```
+- **Java**: JDK `21+`
+- **Maven**: `3.9+`
+- **MySQL Server**: `8.0+`
 
-### 2. Configure Credentials
-Copy the template to `database.properties`:
-```bash
-# Windows (PowerShell)
-Copy-Item src/main/resources/database.properties.example src/main/resources/database.properties
+### 1. Database Setup
 
-# macOS / Linux / Git Bash
-cp src/main/resources/database.properties.example src/main/resources/database.properties
-```
+Initialize the MySQL database and schema:
 
-Update `src/main/resources/database.properties` with your credentials:
+- **PowerShell (Windows)**:
+  ```powershell
+  Get-Content database/schema.sql | mysql -u root -p
+  ```
+
+- **CMD (Windows)**:
+  ```cmd
+  mysql -u root -p < database\schema.sql
+  ```
+
+- **Unix / macOS**:
+  ```bash
+  mysql -u root -p < database/schema.sql
+  ```
+
+### 2. Configuration
+
+Copy the template configuration file:
+
+- **PowerShell (Windows)**:
+  ```powershell
+  Copy-Item src\main\resources\database.properties.example src\main\resources\database.properties
+  ```
+
+- **CMD (Windows)**:
+  ```cmd
+  copy src\main\resources\database.properties.example src\main\resources\database.properties
+  ```
+
+- **Unix / macOS**:
+  ```bash
+  cp src/main/resources/database.properties.example src/main/resources/database.properties
+  ```
+
+Update `src/main/resources/database.properties` with your database credentials:
+
 ```properties
 db.url=jdbc:mysql://localhost:3306/students_db
 db.username=your_user
@@ -81,12 +113,30 @@ db.password=your_password
 ```
 
 ### 3. Run Application
-```bash
-mvn clean compile exec:java -Dexec.mainClass="com.student.management.main.Main"
-```
-*(Or run `Main.java` directly in IntelliJ IDEA, Eclipse, or VS Code).*
+
+Execute the CLI application via Maven:
+
+- **All Platforms**:
+  ```bash
+  mvn clean compile exec:java -Dexec.mainClass="com.student.management.main.Main"
+  ```
+
+*(Or run `Main.java` directly within IntelliJ IDEA, Eclipse, or VS Code).*
 
 ### 4. Run Tests
-```bash
-mvn test
-```
+
+Execute the JUnit test suite:
+
+- **All Platforms**:
+  ```bash
+  mvn test
+  ```
+
+---
+
+## Author
+
+**Shreyan Sardar**
+- **Portfolio**: [shreyandev.vercel.app](https://shreyandev.vercel.app)
+- **GitHub**: [@ShreyanDev5](https://github.com/ShreyanDev5)
+- **LinkedIn**: [shreyansardar](https://www.linkedin.com/in/shreyansardar/)
