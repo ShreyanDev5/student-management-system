@@ -80,14 +80,12 @@ public class Student
     {
         return String.format(
                 """
-                        ┌─────────────────────────────┐
-                        │    📚 Student Information   │
-                        ├─────────────────────────────┤
-                        │ ID    : %-20d │
-                        │ Name  : %-20s │
-                        │ Age   : %-20d │
-                        │ Grade : %-20s │
-                        └─────────────────────────────┘
-                        """, id, name, age, grade);
+                ------------------------------
+                ID    : %d
+                Name  : %s
+                Age   : %d
+                Grade : %s
+                ------------------------------""",
+                id, name, age, grade);
     }
 }

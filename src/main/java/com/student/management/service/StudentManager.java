@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -41,14 +42,16 @@ public class StudentManager
      */
     public void displayStudents(List<Student> students)
     {
-        System.out.println("\n");
+        if (students.isEmpty())
+        {
+            System.out.println("No student records found.");
+            return;
+        }
 
-        // Print the header row of our table
         System.out.println("--------------------------------------------");
         System.out.printf("%-8s | %-18s | %-4s | %-5s%n", "ID", "Name", "Age", "Grade");
         System.out.println("--------------------------------------------");
 
-        // Loop through each student in our list and print their details as a row in our table
         for (Student student : students)
         {
             System.out.printf("%-8d | %-18s | %-4d | %-5s%n",
@@ -58,12 +61,6 @@ public class StudentManager
                     student.getGrade());
         }
         System.out.println("--------------------------------------------");
-
-        // If the student list is empty, print a friendly warning message
-        if (students.isEmpty())
-        {
-            System.out.println("\n❌ No student records found.");
-        }
     }
 
     // -------------------------------------------------
@@ -83,12 +80,12 @@ public class StudentManager
      */
     public void addStudentFromInput(Scanner scanner)
     {
-        System.out.println("\nPlease enter the student details:");
+        System.out.println("\n--- Add Student ---");
 
         // Ask the user for name, age, and grade, and make sure their input is completely valid!
-        String name = validateName(scanner);
-        int age = validateAge(scanner);
-        String grade = validateGrade(scanner);
+        String name = validateName(scanner, "Name: ");
+        int age = validateAge(scanner, "Age (5-120): ");
+        String grade = validateGrade(scanner, "Grade (O, E, A, B, C, D, F): ");
 
         String query = "INSERT INTO students (name, age, grade) VALUES (?, ?, ?)";
 
@@ -103,16 +100,16 @@ public class StudentManager
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0)
             {
-                System.out.println("\n✅ Student '" + name + "' added successfully.");
+                System.out.println("Student '" + name + "' added.");
             }
             else
             {
-                System.out.println("❌ Failed to add student '" + name + "'.");
+                System.out.println("Failed to add student '" + name + "'.");
             }
         }
         catch (SQLException e)
         {
-            System.out.println("❌ Database error: Unable to add student. Please try again.");
+            System.out.println("Database error: Unable to add student.");
             e.printStackTrace();
         }
     }
@@ -142,11 +139,12 @@ public class StudentManager
                         rs.getInt("age"),
                         rs.getString("grade")));
             }
+            System.out.println("\n--- All Students ---");
             displayStudents(students);
         }
         catch (SQLException e)
         {
-            System.out.println("❌ Database error: Unable to fetch students.");
+            System.out.println("Database error: Unable to fetch students.");
             e.printStackTrace();
         }
     }
@@ -178,7 +176,7 @@ public class StudentManager
         }
         catch (SQLException e)
         {
-            System.out.println("❌ Database error: Unable to search for student.");
+            System.out.println("Database error: Unable to search for student.");
             e.printStackTrace();
         }
         return null;
@@ -194,8 +192,7 @@ public class StudentManager
      */
     public void searchByName(Scanner scanner)
     {
-        System.out.print("\nEnter student name: ");
-        String name = validateName(scanner);
+        String name = validateName(scanner, "\nSearch name: ");
         String sql = "SELECT * FROM students WHERE name LIKE ?";
 
         List<Student> students = new ArrayList<>();
@@ -219,7 +216,7 @@ public class StudentManager
         }
         catch (SQLException e)
         {
-            System.out.println("❌ Database error: Unable to search by name.");
+            System.out.println("Database error: Unable to search by name.");
             e.printStackTrace();
         }
     }
@@ -231,8 +228,7 @@ public class StudentManager
      */
     public void searchByGrade(Scanner scanner)
     {
-        System.out.print("\nEnter grade: ");
-        String grade = validateGrade(scanner);
+        String grade = validateGrade(scanner, "\nSearch grade (O, E, A, B, C, D, F): ");
         String sql = "SELECT * FROM students WHERE grade = ?";
 
         List<Student> students = new ArrayList<>();
@@ -255,7 +251,7 @@ public class StudentManager
         }
         catch (SQLException e)
         {
-            System.out.println("❌ Database error: Unable to search by grade.");
+            System.out.println("Database error: Unable to search by grade.");
             e.printStackTrace();
         }
     }
@@ -270,8 +266,7 @@ public class StudentManager
      */
     public void removeStudentById(Scanner scanner)
     {
-        System.out.print("\nEnter student ID to remove: ");
-        int id = validateId(scanner);
+        int id = validateId(scanner, "\nStudent ID to delete: ");
 
         String sql = "DELETE FROM students WHERE id = ?";
 
@@ -284,16 +279,16 @@ public class StudentManager
             // Verify if the deletion affected any rows in the database (meaning the ID existed)
             if (rowsAffected > 0)
             {
-                System.out.println("\n✅ Student removed successfully.");
+                System.out.println("Student ID " + id + " deleted.");
             }
             else
             {
-                System.out.println("❌ No student found with ID " + id + ".");
+                System.out.println("No student found with ID " + id + ".");
             }
         }
         catch (SQLException e)
         {
-            System.out.println("❌ Database error: Unable to remove student.");
+            System.out.println("Database error: Unable to remove student.");
             e.printStackTrace();
         }
     }
@@ -310,21 +305,20 @@ public class StudentManager
      */
     public void updateStudentById(Scanner scanner)
     {
-        System.out.print("\nEnter student ID to update: ");
-        int id = validateId(scanner);
+        int id = validateId(scanner, "\nStudent ID to update: ");
 
         // Fetch current record to ensure target student exists before soliciting updates
         Student student = searchById(id);
         if (student == null)
         {
-            System.out.println("❌ No student found with ID " + id + ".");
+            System.out.println("No student found with ID " + id + ".");
             return;
         }
 
-        System.out.println("\nEnter new details for the student:");
-        String newName = validateName(scanner);
-        int newAge = validateAge(scanner);
-        String newGrade = validateGrade(scanner);
+        System.out.println("\nEnter updated details:");
+        String newName = validateName(scanner, "Name: ");
+        int newAge = validateAge(scanner, "Age (5-120): ");
+        String newGrade = validateGrade(scanner, "Grade (O, E, A, B, C, D, F): ");
 
         String sql = "UPDATE students SET name = ?, age = ?, grade = ? WHERE id = ?";
 
@@ -339,16 +333,16 @@ public class StudentManager
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0)
             {
-                System.out.println("✅ Student updated successfully.");
+                System.out.println("Student ID " + id + " updated.");
             }
             else
             {
-                System.out.println("❌ Failed to update student.");
+                System.out.println("Failed to update student.");
             }
         }
         catch (SQLException e)
         {
-            System.out.println("❌ Database error: Unable to update student.");
+            System.out.println("Database error: Unable to update student.");
             e.printStackTrace();
         }
     }
@@ -369,23 +363,28 @@ public class StudentManager
      */
     public static int validateId(Scanner scanner)
     {
+        return validateId(scanner, "Enter Student ID: ");
+    }
+
+    public static int validateId(Scanner scanner, String prompt)
+    {
         int id;
         while (true)
         {
             try
             {
-                System.out.print("Enter Student ID (positive integer): ");
+                System.out.print(prompt);
                 id = Integer.parseInt(scanner.nextLine().trim());
                 if (id <= 0)
                 {
-                    System.out.println("🔴 Error: ID must be a positive integer.");
+                    System.out.println("ID must be a positive integer.");
                     continue;
                 }
                 return id;
             }
             catch (NumberFormatException e)
             {
-                System.out.println("🔴 Invalid input. Please enter a valid integer.");
+                System.out.println("Invalid input. Enter a valid integer.");
             }
         }
     }
@@ -401,16 +400,21 @@ public class StudentManager
      */
     private String validateName(Scanner scanner)
     {
+        return validateName(scanner, "Name: ");
+    }
+
+    private String validateName(Scanner scanner, String prompt)
+    {
         while (true)
         {
-            System.out.print("Enter Name (letters only): ");
+            System.out.print(prompt);
             String name = scanner.nextLine().trim();
             // Validate name pattern via regular expression (letters and spaces only)
             if (!name.isEmpty() && Pattern.matches("^[a-zA-Z\\s]+$", name))
             {
                 return name;
             }
-            System.out.println("🔴 Invalid name. Only letters and spaces are allowed.");
+            System.out.println("Invalid name. Letters and spaces only.");
         }
     }
 
@@ -424,22 +428,27 @@ public class StudentManager
      */
     private int validateAge(Scanner scanner)
     {
+        return validateAge(scanner, "Age (5-120): ");
+    }
+
+    private int validateAge(Scanner scanner, String prompt)
+    {
         int age;
         while (true)
         {
             try
             {
-                System.out.print("Enter Age (5 to 120): ");
+                System.out.print(prompt);
                 age = Integer.parseInt(scanner.nextLine().trim());
                 if (age >= 5 && age <= 120)
                 {
                     return age;
                 }
-                System.out.println("🔴 Age must be between 5 and 120.");
+                System.out.println("Age must be between 5 and 120.");
             }
             catch (NumberFormatException e)
             {
-                System.out.println("🔴 Invalid input. Please enter a valid integer.");
+                System.out.println("Invalid input. Enter a valid integer.");
             }
         }
     }
@@ -455,16 +464,21 @@ public class StudentManager
      */
     private String validateGrade(Scanner scanner)
     {
+        return validateGrade(scanner, "Grade (O, E, A, B, C, D, F): ");
+    }
+
+    private String validateGrade(Scanner scanner, String prompt)
+    {
         while (true)
         {
-            System.out.print("Enter Grade (O, E, A, B, C, D, or F): ");
+            System.out.print(prompt);
             String grade = scanner.nextLine().trim().toUpperCase();
             // Check grade validity against defined pattern
             if (Pattern.matches("^(O|E|A|B|C|D|F)$", grade))
             {
                 return grade;
             }
-            System.out.println("🔴 Invalid grade. Allowed formats: O, E, A, B, C, D, or F.");
+            System.out.println("Invalid grade. Allowed: O, E, A, B, C, D, F.");
         }
     }
 
@@ -481,9 +495,62 @@ public class StudentManager
      */
     public void generateGradeReport()
     {
-        System.out.println("\n📊 Grade Distribution Report: ");
-        Map<String, Integer> gradeCount = new HashMap<>();
-        String sql = "SELECT grade, COUNT(*) AS count FROM students GROUP BY grade";
+        System.out.println("\n--- Grade Distribution ---");
+        Map<String, Integer> gradeCount = fetchGradeDistribution();
+        renderGradeBreakdownTable(gradeCount);
+    }
+
+    /**
+     * Renders a clean, aligned breakdown table showing grade counts and percentage shares.
+     *
+     * @param gradeCount Ordered map of grade to student count
+     */
+    private void renderGradeBreakdownTable(Map<String, Integer> gradeCount)
+    {
+        if (gradeCount.isEmpty())
+        {
+            System.out.println("No student records found.");
+            return;
+        }
+
+        int total = gradeCount.values().stream().mapToInt(Integer::intValue).sum();
+
+        System.out.println("-----------------------");
+        System.out.printf(" %-6s| %-6s| %-6s%n", "Grade", "Count", "Share");
+        System.out.println("-----------------------");
+
+        for (Map.Entry<String, Integer> entry : gradeCount.entrySet())
+        {
+            String grade = entry.getKey();
+            int count = entry.getValue();
+            double share = total > 0 ? (count * 100.0) / total : 0.0;
+            System.out.printf("   %-4s|  %4d | %5.1f%%%n", grade, count, share);
+        }
+
+        System.out.println("-----------------------");
+        System.out.printf(" %-6s|  %4d | %5.1f%%%n", "Total", total, 100.0);
+        System.out.println("-----------------------");
+    }
+
+    private Map<String, Integer> fetchGradeDistribution()
+    {
+        Map<String, Integer> gradeCount = new LinkedHashMap<>();
+        String sql = """
+                SELECT grade, COUNT(*) AS count
+                FROM students
+                GROUP BY grade
+                ORDER BY
+                    CASE grade
+                        WHEN 'O' THEN 7
+                        WHEN 'E' THEN 6
+                        WHEN 'A' THEN 5
+                        WHEN 'B' THEN 4
+                        WHEN 'C' THEN 3
+                        WHEN 'D' THEN 2
+                        WHEN 'F' THEN 1
+                        ELSE 0
+                    END DESC;
+                """;
 
         try (Connection conn = DBConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
@@ -491,26 +558,15 @@ public class StudentManager
         {
             while (rs.next())
             {
-                String grade = rs.getString("grade");
-                int count = rs.getInt("count");
-                gradeCount.put(grade, count);
-            }
-
-            // Print the distribution totals or error message if empty
-            if (gradeCount.isEmpty())
-            {
-                System.out.println("❌ No students found.");
-            }
-            else
-            {
-                gradeCount.forEach((grade, count) -> System.out.println(grade + ": " + count));
+                gradeCount.put(rs.getString("grade"), rs.getInt("count"));
             }
         }
         catch (SQLException e)
         {
-            System.out.println("❌ Database error: Unable to generate grade report.");
+            System.out.println("Database error: Unable to generate grade report.");
             e.printStackTrace();
         }
+        return gradeCount;
     }
 
     /**
@@ -525,23 +581,18 @@ public class StudentManager
      */
     public void generateAgeRangeReport(Scanner scanner)
     {
-        System.out.println("\nEnter minimum age: ");
-        int minAge = validateAge(scanner);
-
-        System.out.println("\nEnter maximum age: ");
-        int maxAge = validateAge(scanner);
+        int minAge = validateAge(scanner, "\nMinimum age (5-120): ");
+        int maxAge = validateAge(scanner, "Maximum age (5-120): ");
 
         // Ensure boundary consistency (minimum age cannot exceed maximum age)
         while (minAge > maxAge)
         {
-            System.out.println("\n⚠️ Please enter a valid age range.");
-            System.out.println("\nEnter minimum age: ");
-            minAge = validateAge(scanner);
-            System.out.println("\nEnter maximum age: ");
-            maxAge = validateAge(scanner);
+            System.out.println("Minimum age cannot exceed maximum age.");
+            minAge = validateAge(scanner, "Minimum age (5-120): ");
+            maxAge = validateAge(scanner, "Maximum age (5-120): ");
         }
 
-        System.out.println("\n📊 Age Range Report (" + minAge + " to " + maxAge + ")");
+        System.out.println("\n--- Age Range (" + minAge + " - " + maxAge + ") ---");
 
         String sql = "SELECT id, name, age, grade FROM students WHERE age BETWEEN ? AND ?";
         List<Student> ageFiltered = new ArrayList<>();
@@ -565,7 +616,7 @@ public class StudentManager
         }
         catch (SQLException e)
         {
-            System.out.println("❌ Database error: Unable to generate age range report.");
+            System.out.println("Database error: Unable to generate age range report.");
             e.printStackTrace();
         }
     }
@@ -578,8 +629,7 @@ public class StudentManager
      */
     public void generateSummaryStatisticsReport()
     {
-        System.out.println("\n📊 Summary Statistics:");
-        System.out.println("--------------------------------------------");
+        System.out.println("\n--- Summary Statistics ---");
 
         String studentCountSql = "SELECT COUNT(*) AS total FROM students";
         String avgAgeSql = "SELECT AVG(age) AS avg_age FROM students";
@@ -598,10 +648,10 @@ public class StudentManager
             }
             if (totalStudents == 0)
             {
-                System.out.println("\n❌ No students available to generate statistics.");
+                System.out.println("No student records found.");
                 return;
             }
-            System.out.println("Total Students: " + totalStudents);
+            System.out.println("Total Students : " + totalStudents);
 
             // Step 2: Compute average student age
             double averageAge = 0.0;
@@ -613,15 +663,16 @@ public class StudentManager
                     averageAge = rs.getDouble("avg_age");
                 }
             }
-            System.out.printf("Average Age: %.2f%n", averageAge);
+            System.out.printf("Average Age    : %.2f%n", averageAge);
 
-            // Step 3: Print grade breakdown by delegating to the grade report method
-            System.out.println("\nGrade Distribution:");
-            generateGradeReport();
+            // Step 3: Print grade breakdown
+            System.out.println("\nGrade Breakdown:");
+            Map<String, Integer> gradeCount = fetchGradeDistribution();
+            renderGradeBreakdownTable(gradeCount);
         }
         catch (SQLException e)
         {
-            System.out.println("❌ Database error: Unable to generate summary statistics.");
+            System.out.println("Database error: Unable to generate summary statistics.");
             e.printStackTrace();
         }
     }
@@ -666,12 +717,12 @@ public class StudentManager
                         rs.getInt("age"),
                         rs.getString("grade")));
             }
-            System.out.println("\n🎖️ Top Performers:");
+            System.out.println("\n--- Top Performers ---");
             displayStudents(topPerformers);
         }
         catch (SQLException e)
         {
-            System.out.println("\n❌ Error fetching top performers: " + e.getMessage());
+            System.out.println("Database error: Unable to fetch top performers: " + e.getMessage());
         }
     }
 }

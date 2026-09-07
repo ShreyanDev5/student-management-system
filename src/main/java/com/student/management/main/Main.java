@@ -56,8 +56,7 @@ public class Main
             }
             catch (NumberFormatException e)
             {
-                // If the user typed letters instead of a number, print an error instead of crashing!
-                System.out.println("\n🔴 Invalid input. Please enter a number between 0 and 11.");
+                System.out.println("\nInvalid option. Enter a number (0-11).");
             }
         }
     }
@@ -65,43 +64,32 @@ public class Main
     // ======================== Console Display Methods ========================
 
     /**
-     * Prints a beautiful, decorated welcome banner at the very start of the program.
+     * Prints a sleek header banner at the start of the program.
      */
     private static void showHeader()
     {
-        System.out.println("\n");
-        System.out.println("╔═══════════════════════════════════════════╗");
-        System.out.println("║             📱 STUDENT MANAGER            ║");
-        System.out.println("╚═══════════════════════════════════════════╝");
+        System.out.println("+--------------------------------------------------------+");
+        System.out.println("|               STUDENT MANAGEMENT SYSTEM                |");
+        System.out.println("+--------------------------------------------------------+");
     }
 
     /**
-     * Prints the numbered options list (0 to 11) for student operations and reporting features.
+     * Prints the two-column options menu for student operations and reporting features.
      */
     private static void displayMenu()
     {
-        System.out.println("\n═════════════════════════════════════════════");
-        System.out.println("\n⚠️ 0. Exit Application");
-
-        // Operations section
-        System.out.println("\n⚙️ STUDENT OPERATIONS:");
-        System.out.println("  1. ➕ Add New Student");
-        System.out.println("  2. 📃 View All Students");
-        System.out.println("  3. 🔍 Search Student by ID");
-        System.out.println("  4. 🔍 Search Student by Name");
-        System.out.println("  5. 🔍 Search Student by Grade");
-        System.out.println("  6. ❌ Remove Student by ID");
-        System.out.println("  7. ✏️  Update Student Information");
-
-        // Analytics and reports section
-        System.out.println("\n📊 REPORTING FEATURES:");
-        System.out.println("  8. 📈 Generate Grade Distribution Report");
-        System.out.println("  9. 👥 Generate Age-Range Analysis");
-        System.out.println("  10. 🔢 Generate Summary Statistics");
-        System.out.println("  11. 🏆 View Top Performers");
-
-        System.out.println("\n═════════════════════════════════════════════");
-        System.out.print("Select an option (0-11): ");
+        System.out.println();
+        System.out.println("  [ Records ]                       [ Reports ]");
+        System.out.println("   1. Add Student                    8. Grade Distribution");
+        System.out.println("   2. View All Students              9. Age Analysis");
+        System.out.println("   3. Search by ID                  10. Summary Statistics");
+        System.out.println("   4. Search by Name                11. Top Performers");
+        System.out.println("   5. Search by Grade");
+        System.out.println("   6. Delete Student                 0. Exit");
+        System.out.println("   7. Update Student");
+        System.out.println();
+        System.out.println("----------------------------------------------------------");
+        System.out.print("Select option [0-11]: ");
     }
 
     // ======================== Menu Dispatcher ========================
@@ -152,7 +140,7 @@ public class Main
                 manager.generateTopPerformersReport();
                 break;
             default:
-                System.out.println("Invalid choice. Please try again.");
+                System.out.println("Invalid option. Enter a number (0-11).");
                 break;
         }
     }
@@ -178,35 +166,29 @@ public class Main
      */
     private static void searchStudentById(Scanner scanner, StudentManager manager)
     {
-        System.out.print("Enter the ID of the student to search: ");
-        int id = StudentManager.validateId(scanner);
+        int id = StudentManager.validateId(scanner, "\nEnter student ID: ");
 
         Student student = manager.searchById(id);
         if (student != null)
         {
-            // Print the styled box layout of the found student card
             System.out.println(student);
         }
         else
         {
-            // Notify the user if no record matches the given ID
-            System.out.println("\n❌ No student found with ID: " + id);
+            System.out.println("No student found with ID: " + id);
         }
     }
 
     // ======================== Lifecycle and Cleanup ========================
 
     /**
-     * Safely closes the Scanner resource and prints a warm farewell message.
-     * 
-     * For beginners: It is always good practice to close resources like Scanners or database 
-     * connections when we are done using them to keep our computer's memory clean and happy.
+     * Safely closes the Scanner resource and prints an exit message.
      *
      * @param scanner The Scanner tool to close
      */
     private static void exitApplication(Scanner scanner)
     {
         scanner.close();
-        System.out.println("\nExiting the system. Goodbye 👋");
+        System.out.println("\nApplication exited.");
     }
 }
