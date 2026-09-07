@@ -11,9 +11,9 @@ Console-based Java application for managing student records and generating SQL a
 
 | Main Dashboard | Student Lookup |
 | :---: | :---: |
-| <img src="assets/dashboard.png" width="420" alt="Main Dashboard" /> | <img src="assets/student_lookup.png" width="420" alt="Student Lookup" /> |
+| <img src="assets/dashboard.png" width="400" alt="Main Dashboard" /> | <img src="assets/student_lookup.png" width="310" alt="Student Lookup" /> |
 | **Top Performers (SQL Sort)** | **Summary Statistics (Aggregations)** |
-| <img src="assets/top_performers.png" width="420" alt="Top Performers" /> | <img src="assets/summary_statistics.png" width="420" alt="Summary Statistics" /> |
+| <img src="assets/top_performers.png" width="400" alt="Top Performers" /> | <img src="assets/summary_statistics.png" width="260" alt="Summary Statistics" /> |
 
 ---
 
@@ -39,21 +39,21 @@ Console-based Java application for managing student records and generating SQL a
 
 ```text
 student-management-system/
-├── assets/                             # Preview screenshots
+├── assets/                                   # Preview screenshots
 ├── database/
-│   └── schema.sql                      # Database schema and sample data
+│   └── schema.sql                            # Database schema and sample data
 ├── src/
 │   ├── main/
 │   │   ├── java/com/student/management/
-│   │   │   ├── main/Main.java          # CLI interface and menu router
-│   │   │   ├── model/Student.java      # Student data model
-│   │   │   ├── service/StudentManager.java # Business logic and JDBC queries
-│   │   │   └── util/DBConnection.java  # Database connection manager
+│   │   │   ├── main/Main.java                # CLI interface and menu router
+│   │   │   ├── model/Student.java            # Student data model
+│   │   │   ├── service/StudentManager.java   # Business logic and JDBC queries
+│   │   │   └── util/DBConnection.java        # Database connection manager
 │   │   └── resources/
-│   │       └── database.properties.example
+│   │       └── database.properties.example   # Configuration template
 │   └── test/java/com/student/management/
-│       └── StudentManagerTest.java
-└── pom.xml
+│       └── StudentManagerTest.java           # Unit test suite
+└── pom.xml                                   # Build configuration
 ```
 
 ---
