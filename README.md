@@ -68,6 +68,11 @@ Copy the example configuration:
 cp src/main/resources/database.properties.example src/main/resources/database.properties
 ```
 
+> **Windows CMD:**
+> ```cmd
+> copy src\main\resources\database.properties.example src\main\resources\database.properties
+> ```
+
 Update `src/main/resources/database.properties` with your credentials:
 
 ```properties
@@ -79,7 +84,7 @@ db.password=your_password
 ### 3. Run Application
 
 ```bash
-mvn compile exec:java -Dexec.mainClass="com.student.management.main.Main"
+mvn compile exec:java
 ```
 
 *(Or run [`Main.java`](src/main/java/com/student/management/main/Main.java) directly in your IDE).*
