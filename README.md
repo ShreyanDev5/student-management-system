@@ -2,18 +2,22 @@
 
 Console-based Java application for managing student records and generating SQL analytics with MySQL and JDBC.
 
-[![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](#)
-[![Database](https://img.shields.io/badge/Database-MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat-square)](#)
+[![Database](https://img.shields.io/badge/Database-MySQL-4479A1?style=flat-square)](https://www.mysql.com/)
 
 ---
 
 ## Preview
+
+<div align="center">
 
 | Main Dashboard | Student Lookup |
 | :---: | :---: |
 | <img src="assets/dashboard.png" width="400" alt="Main Dashboard" /> | <img src="assets/student_lookup.png" width="310" alt="Student Lookup" /> |
 | **Top Performers (SQL Sort)** | **Summary Statistics (Aggregations)** |
 | <img src="assets/top_performers.png" width="400" alt="Top Performers" /> | <img src="assets/summary_statistics.png" width="260" alt="Summary Statistics" /> |
+
+</div>
 
 ---
 
@@ -35,29 +39,6 @@ Console-based Java application for managing student records and generating SQL a
 
 ---
 
-## Project Structure
-
-```text
-student-management-system/
-├── assets/                                   # Preview screenshots
-├── database/
-│   └── schema.sql                            # Database schema and sample data
-├── src/
-│   ├── main/
-│   │   ├── java/com/student/management/
-│   │   │   ├── main/Main.java                # CLI interface and menu router
-│   │   │   ├── model/Student.java            # Student data model
-│   │   │   ├── service/StudentManager.java   # Business logic and JDBC queries
-│   │   │   └── util/DBConnection.java        # Database connection manager
-│   │   └── resources/
-│   │       └── database.properties.example   # Configuration template
-│   └── test/java/com/student/management/
-│       └── StudentManagerTest.java           # Unit test suite
-└── pom.xml                                   # Build configuration
-```
-
----
-
 ## Getting Started
 
 ### Prerequisites
@@ -73,7 +54,11 @@ Import the schema into MySQL:
 ```bash
 mysql -u root -p < database/schema.sql
 ```
-*(Windows PowerShell: `Get-Content database/schema.sql | mysql -u root -p`)*
+
+> **Windows PowerShell:**
+> ```powershell
+> Get-Content database/schema.sql | mysql -u root -p
+> ```
 
 ### 2. Configuration
 
@@ -82,9 +67,8 @@ Copy the example configuration:
 ```bash
 cp src/main/resources/database.properties.example src/main/resources/database.properties
 ```
-*(Windows CMD: `copy src\main\resources\database.properties.example src\main\resources\database.properties`)*
 
-Update `src/main/resources/database.properties` with your database credentials:
+Update `src/main/resources/database.properties` with your credentials:
 
 ```properties
 db.url=jdbc:mysql://localhost:3306/students_db
@@ -98,7 +82,7 @@ db.password=your_password
 mvn compile exec:java -Dexec.mainClass="com.student.management.main.Main"
 ```
 
-*(Or run [`Main.java`](src/main/java/com/student/management/main/Main.java) directly within IntelliJ IDEA, Eclipse, or VS Code).*
+*(Or run [`Main.java`](src/main/java/com/student/management/main/Main.java) directly in your IDE).*
 
 ### 4. Run Tests
 
@@ -110,7 +94,4 @@ mvn test
 
 ## Author
 
-**Shreyan Sardar**
-- **Portfolio**: [shreyandev.vercel.app](https://shreyandev.vercel.app)
-- **GitHub**: [@ShreyanDev5](https://github.com/ShreyanDev5)
-- **LinkedIn**: [shreyansardar](https://www.linkedin.com/in/shreyansardar/)
+**Shreyan Sardar** — [Portfolio](https://shreyandev.vercel.app) · [GitHub](https://github.com/ShreyanDev5) · [LinkedIn](https://www.linkedin.com/in/shreyansardar/)
